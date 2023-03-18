@@ -1,10 +1,6 @@
-const { Schema } = require('mongoose');
-const mongoose= require('mongoose');
-const Schema =mongoose.Schema;
-const model=mongoose.model;
+const { Schema, model } = require('mongoose');
 
 const productSchema=new Schema({
-    productId:Number,
     productName:{
         type:String,
         required:[true,'please set product Name']
@@ -14,9 +10,10 @@ const productSchema=new Schema({
         required:[true,'please set the description'],
         lowercase:true,
     },
-    categoryId:{
-        type:Schema.Types.ObjectId,
-        ref:'Category',
+    category:{
+        type:String,
+        enum:["Clothes" , "Home Decor" ,"Jewelry" ,"Soap","Ceramic"],
+        required:[true,'please choose the Category'],
     },
     price:{
         type:Number,
@@ -27,17 +24,19 @@ const productSchema=new Schema({
             message   : '{VALUE} is not an integer value'
         }
     },
-    images:{
+    images:[{
         type:String, 
-        required:[true,'please add images for the product']
-    }, 
+        required:[true,'please add images for the product'],
+    }], 
     offerId:{
         type:Schema.Types.ObjectId,
         ref:'Offer',
+        required:[true,'please add offer ID']
     },
-    UserId:{
+    userId:{
         type:Schema.Types.ObjectId,
         ref:'User',
+        required:[true,'please add user ID']
     }
 })
 
