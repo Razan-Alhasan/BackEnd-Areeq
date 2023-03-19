@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const discountSchema = new Schema({
     code: {
         type: string,
-        required: [true, 'Please enter the value']
+        required: [true, 'Please enter the code']
 
     },
     value: {
