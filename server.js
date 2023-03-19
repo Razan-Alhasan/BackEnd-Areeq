@@ -21,7 +21,6 @@ const orderSchema = new Schema(
     {
         user: String
     });
-//mongoose.model('Discount',discountSchema);
 const app = express();
 app.use(cors());
 app.use(express.json());
