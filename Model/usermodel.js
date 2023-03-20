@@ -29,12 +29,15 @@ const userSchema = new Schema({
     },
     photo: {
 		type: String,
+        required: true,
 	},
     link: {
         type : String,
+        required: true,
     },
     Type: {
         type : String,
+        required: true,
     },
   });
   userSchema.virtual('fullName').get(function() {
@@ -65,5 +68,5 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   module.exports = User;
 
 
-  
+
   
