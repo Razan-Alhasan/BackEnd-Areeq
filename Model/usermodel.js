@@ -1,26 +1,25 @@
-const mongoose = require ('mongoose');
-const Schema = mongoose.Schema;
-const module = mongoose.module;
+const { Schema, model } = require('mongoose');
 const validator = require('validator');
-bcrypt = require(bcrypt),
-SALT_WORK_FACTOR = 10;
 
 
 const userSchema = new Schema({
-    username: {
-		first_name: {
-			type: String,
-			required: true,
-		},
-		last_name: {
-			type: String,
-			required: true,
-		},
-	},
+    firstName: {
+                 type: String,
+                 required: true
+    },
+
+    lastName: {
+                type: String,
+                required: true
+    },
+
+
 	email: {
 		type: String,
 		required: true,
-		validate: isEmail,
+		validate: {validator: validator.isEmail,
+                   message: '{value} is not a valid email',
+                   isAsync: false},
 		unique: true,
 	},
 	password: {
@@ -31,38 +30,28 @@ const userSchema = new Schema({
     photo: {
 		type: String,
 	},
-    ID: {
-        Type : String,
-    },
-    Link: {
-        Type : String,
+    link: {
+        type : String,
     },
     Type: {
-        Type : String,
+        type : String,
     },
-
+  });
+  userSchema.virtual('fullName').get(function() {
+     return ${this.firstName} ${this.lastName};
   });
 
-  userSchema.pre(save, function(next) {
+userSchema.pre(save, function(next) {
     var user = this;
-
-// only hash the password if it has been modified (or is new)
-if (!user.isModified('password')) return next();
-
-// generate a salt
-bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if (!user.isModified('password')) return next();
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     if (err) return next(err);
-
-    // hash the password using our new salt
     bcrypt.hash(user.password, salt, function(err, hash) {
         if (err) return next(err);
-
-        // override the cleartext password with the hashed one
         user.password = hash;
         next();
     });
 });
-
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
@@ -74,4 +63,7 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 
   const User = model('User',userSchema); 
   module.exports = User;
+
+
+  
   
