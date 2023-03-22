@@ -4,22 +4,20 @@ const validator = require('validator');
 
 const userSchema = new Schema({
     firstName: {
-                 type: String,
-                 required: true
+        type: String,
+        required: true
     },
-
     lastName: {
-                type: String,
-                required: true
+        type: String,
+        required: true
     },
-
-
 	email: {
-		type: String,
+	    type: String,
 		required: true,
-		validate: {validator: validator.isEmail,
-                   message: '{value} is not a valid email',
-                   isAsync: false},
+		validate: {
+            validator: validator.isEmail,
+            message: '{value} is not a valid email',
+            isAsync: false},
 		unique: true,
 	},
 	password: {
@@ -35,7 +33,7 @@ const userSchema = new Schema({
         type : String,
         required: true,
     },
-    Type: {
+    type: {
         type : String,
         required: true,
     },
@@ -67,6 +65,3 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   const User = model('User',userSchema); 
   module.exports = User;
 
-
-
-  
