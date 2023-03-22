@@ -5,20 +5,20 @@ module.exports.getProducts = async () => {
 module.exports.createProduct = async newProduct => {
 	return await Product.create(newProduct);  
 };
-module.exports.updateProduct = async (_id, newProduct) => {
-    return await Product.findByIdAndUpdate(_id, newProduct, { new: true }); 
+module.exports.updateProduct = async (productId, newProduct) => {
+    return await Product.findByIdAndUpdate(productId, newProduct, { new: true }); 
 };
-module.exports.archiveProduct = async _id => {  
-    const product = await Product.findById({_id}); 
+module.exports.archiveProduct = async productId => {  
+    const product = await Product.findById({productId}); 
     product.isArchived = !product.isArchived;
     return product.save();
 };
 module.exports.getProductsByCategory = async category => {
     return await Product.find({category}); 
 };
-module.exports.getProductsBySeller = async user => {
-    return await Product.find({user}).populate({
-        path :'User',
-        select:{productId},
-    }); 
+module.exports.getProductsBySeller = async userId => {
+    return await Product.find({userId }).populate('offer').populate('user').populate('reviews');
+};
+module.exports.findProduct = async productId => {
+	return await Product.findById(productId);
 };
