@@ -1,11 +1,10 @@
 const { Schema, model } = require('mongoose');
-
-const productSchema=new Schema({
-    productName:{
+const productSchema = new Schema({
+    name:{
         type:String,
         required:[true,'please set product Name']
     },
-    productDesc:{
+    description:{
         type:String,
         required:[true,'please set the description'],
         lowercase:true,
@@ -28,15 +27,23 @@ const productSchema=new Schema({
         type:String, 
         required:[true,'please add images for the product'],
     }], 
-    offerId:{
+    offer:{
         type:Schema.Types.ObjectId,
         ref:'Offer',
-        required:[true,'please add offer ID']
     },
-    userId:{
+    user:{
         type:Schema.Types.ObjectId,
         ref:'User',
         required:[true,'please add user ID']
+    },
+    reviews:[{
+        type:Schema.Types.ObjectId,
+        ref:'Review',
+    }],
+    isArchived:{
+        type:Boolean,
+        default:false,
+        required:true
     }
 })
 
