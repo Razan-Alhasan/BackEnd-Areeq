@@ -11,5 +11,5 @@ const discountSchema = new Schema({
         required: [true, 'Please enter the value']
     }
 })
-const Discount = model('Discount', discountSchema);
-module.exports = Discount;
+const discount = model('Discount', discountSchema);
+module.exports = discount;
