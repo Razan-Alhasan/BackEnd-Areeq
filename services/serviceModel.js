@@ -11,3 +11,6 @@ module.exports.deleteDiscount = async _id => {
 module.exports.updateById = async (id, newDiscount) => {
     return await discount.findByIdAndUpdate(id, newDiscount, { new: true }).populate('value');
 };
+module.exports.getDiscountById = async id => {
+    return await discount.findById(id).populate('value');
+};
