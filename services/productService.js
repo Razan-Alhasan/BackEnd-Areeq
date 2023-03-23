@@ -18,4 +18,7 @@ module.exports.getProductsByCategory = async category => {
 };
 module.exports.getProductsBySeller = async userId => {
     return await Product.find({userId }).populate('offer').populate('user').populate('reviews');
-}
+};
+module.exports.findProduct = async productId => {
+	return await Product.findById(productId);
+};
