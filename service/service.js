@@ -22,4 +22,5 @@ module.exports.login = async (email, password) => {
 };
 module.exports.comparePassword = async (enterPassword, id) => {
 	return await User.comparePassword(enterPassword, id);
-};  
+}; 
+
