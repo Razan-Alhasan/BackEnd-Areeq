@@ -5,13 +5,13 @@ module.exports.getProducts = async () => {
 module.exports.createProduct = async newProduct => {
 	return await Product.create(newProduct);  
 };
-module.exports.updateProduct = async (productId, newProduct) => {
-    return await Product.findByIdAndUpdate(productId, newProduct, { new: true }); 
+module.exports.updateProduct = async (productId, updateFields) => {
+    return await Product.findByIdAndUpdate(productId, { $set: updateFields }, { new: true }); 
 };
-module.exports.archiveProduct = async productId => {  
+module.exports.changeArchiveStatus = async productId => {  
     const product = await Product.findById({productId}); 
     product.isArchived = !product.isArchived;
-    return product.save();
+    await product.save();
 };
 module.exports.getProductsByCategory = async category => {
     return await Product.find({category}); 
@@ -19,6 +19,6 @@ module.exports.getProductsByCategory = async category => {
 module.exports.getProductsBySeller = async userId => {
     return await Product.find({userId }).populate('offer').populate('user').populate('reviews');
 };
-module.exports.findProduct = async productId => {
+module.exports.getProductById = async productId => {
 	return await Product.findById(productId);
 };
