@@ -8,12 +8,6 @@ module.exports.updateUser = async (id, updateFields) => {
 	return await User.findByIdAndUpdate(id, updateFields, { new: true });
 };
 module.exports.removeUser = async user_id => {
-	removeUser.pre('deleteOne', function(){
-		this instanceof mongoose.Query;
-	});
-	removeUser.pre('deleteMany', function(){
-		this instanceof mongoose.Query;
-	});
 };
 module.exports.getUserById = async () => {
 	const user = await User.findById({ _id: id });
