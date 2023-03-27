@@ -1,8 +1,11 @@
 const express = require('express');
+const { model } = require('mongoose');
 const router = express.Router();
 const userController = require('../controller/userController');
 
 router.get('/user', userController.getuser); 
 router.post('/user', userController.createuser); 
 router.patch('/user/:id', userController.updateuser); 
-router.patch('user/:id',userController.deleteuser);
+router.delete('user/:id',userController.deleteuser);
+
+model.exports = router;
