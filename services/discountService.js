@@ -14,3 +14,4 @@ module.exports.updateById = async (id, newDiscount) => {
 module.exports.getDiscountById = async id => {
     return await discount.findById(id).populate('value');
 };
+
