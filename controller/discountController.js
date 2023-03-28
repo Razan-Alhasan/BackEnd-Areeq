@@ -21,8 +21,8 @@ module.exports.getDiscounts = async (req = express.request, res = express.respon
 };
 module.exports.getDiscountById = async (req = express.request, res = express.response) => {
     try {
-        const discounts = await discountService.getDiscountById();
-        res.status(200).json(discounts);
+        const discount = await discountService.getDiscountById(req.params.id);
+        res.status(200).json(discount);
     } catch (err) {
         const error = `Failed to get discount, error: ${err}`;
         res.status(404).json({ error });
