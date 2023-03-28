@@ -14,7 +14,7 @@ module.exports.createUser = async (req = express.request,res = express.response)
 };
 module.exports.getUser = async (req = express.request,res = express.response) =>{
     try {
-		const user = await userService.getUser();
+        const user = await userService.getUserByID(req.params.id);
 		res.status(200).json(user);
 	} 
     catch (err) {
@@ -33,10 +33,10 @@ module.exports.updateUser = async (req = express.request,res = express.response)
 		res.status(400).json({ errors});
     }
 };
-module.exports.deleteUser = async (req = express.request,res = express.response) =>{
+module.exports.removeUser = async (req = express.request,res = express.response) =>{
     try{
         const id = req.params.id;
-        await userService.deleteUser(id);
+        await userService.removeUser(req.params.id);
         res.status(204);
     }
     catch(err){
