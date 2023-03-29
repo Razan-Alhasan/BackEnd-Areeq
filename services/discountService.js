@@ -8,9 +8,10 @@ module.exports.createDiscount = async newDiscount => {
 module.exports.deleteDiscount = async _id => {
     return await discount.deleteOne({ _id });
 };
-module.exports.updateById = async (id, newDiscount) => {
-    return await discount.findByIdAndUpdate(id, newDiscount, { new: true }).populate('value');
+module.exports.updateById = async (id, updatedFileds) => {
+    return await discount.findByIdAndUpdate(id, { $set: updatedFileds }, { new: true }).populate('value');
 };
 module.exports.getDiscountById = async id => {
     return await discount.findById(id).populate('value');
 };
+
