@@ -22,10 +22,7 @@ const reviewSchema = new Schema({
         required:[true, 'please add your review'],
     }
 },
-    { timestamps: {
-        createdAt: 'created_at', 
-        updatedAt: 'updated_at' }
-    }
+    { timestamps:true }
 );
 const review = model('Review', reviewSchema);
 module.exports = review;
