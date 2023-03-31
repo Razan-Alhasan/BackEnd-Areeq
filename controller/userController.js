@@ -1,10 +1,8 @@
-const User = require('../models/userModel');
-const userService = require('../service/userService');
+const userService = require('../services/userService');
 
 module.exports.createUser = async (req = express.request, res = express.response) =>{
     try{
-        let user = new user(req.body);
-        user.save();
+        userService.createUser(req.body);
         res.status(200).json(user);
     }
     catch (err) {
@@ -28,7 +26,7 @@ module.exports.updateUser = async (req = express.request, res = express.response
         userService.updateUser(req.params.id, updateFields);
     }
     catch(err){
-        const errors = `FAILD to Update user with id ${id}, err: ${error}`;
+        const errors = `FAILD to Update user with id ${req.params.id}, err: ${error}`;
 		res.status(400).json({ errors});
     }
 };
@@ -38,8 +36,7 @@ module.exports.removeUser = async (req = express.request, res = express.response
         res.status(204);
     }
     catch(err){
-        const errors = `FAILD to delete this user with id: ${id},error:${err}`;
+        const errors = `FAILD to delete this user with id: ${req.params.id}, error:${err}`;
 		res.status(400).json({ errors});
     }
 };
-
