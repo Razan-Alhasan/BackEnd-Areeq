@@ -3,7 +3,7 @@ const userService = require('../service/userService');
 
 module.exports.createUser = async (req = express.request,res = express.response) =>{
     try{
-    let user = new user(req.body);
+        let user = new user(req.body);
         user.save();
         res.status(200).json(user);
     }
@@ -14,7 +14,7 @@ module.exports.createUser = async (req = express.request,res = express.response)
 };
 module.exports.getUser = async (req = express.request,res = express.response) =>{
     try {
-        const user = await userService.getUserByID(req.params.id);
+        const user = await userService.getUserById(req.params.id);
 		res.status(200).json(user);
 	} 
     catch (err) {
@@ -23,10 +23,9 @@ module.exports.getUser = async (req = express.request,res = express.response) =>
 	}
 };
 module.exports.updateUser = async (req = express.request,res = express.response) =>{
-    const id = req.params.id;
     const updateFields = req.body;
 	try {
-        userService.updateUser(userId, updateFields);
+        userService.updateUser(req.params.id, updateFields);
     }
     catch(err){
         const errors = `FAILD to Update user with id ${id}, err: ${error}`;
@@ -35,7 +34,6 @@ module.exports.updateUser = async (req = express.request,res = express.response)
 };
 module.exports.removeUser = async (req = express.request,res = express.response) =>{
     try{
-        const id = req.params.id;
         await userService.removeUser(req.params.id);
         res.status(204);
     }
