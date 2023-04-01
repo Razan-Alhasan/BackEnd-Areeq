@@ -7,11 +7,10 @@ module.exports.updateUser = async (id, newInformation) => {
 	return await User.findByIdAndUpdate(id, newInformation, { new: true });
 };
 module.exports.removeUser = async user_id => {
-	await Order.deleteMany({ user: _id });
-	return await User.deleteOne({ _id });
+	return await User.deleteOne({ _id : user_id });
 };
-module.exports.getUserById = async () => {
-	const user = await User.findById({ _id: id });
+module.exports.getUserById = async (id ) => {
+	const user = await User.findById(id);
     delete user.password;
     return user; 
 };
