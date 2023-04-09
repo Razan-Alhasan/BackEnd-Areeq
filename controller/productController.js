@@ -3,7 +3,7 @@ const productService = require('../services/productService');
 
 module.exports.createProduct = async (req = express.request, res = express.response) =>{
     try{
-    let product = new product(req.body);
+    let product = new Product(req.body);
         product.save();
         res.status(200).json(product);
     }catch (err) {
