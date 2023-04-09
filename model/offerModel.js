@@ -12,10 +12,6 @@ const offerSchema = new Schema({
         type: String,
 		    required: [true],
       },
-      id:{
-        type: String,
-		    required: [true],
-      },
 })
 
 const offer = model('offer', offerSchema);

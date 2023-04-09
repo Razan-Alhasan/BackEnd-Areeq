@@ -33,7 +33,7 @@ module.exports.updateOffer = async (req = express.request, res = express.respons
     const id = req.params.id;
     const newInformation = req.body;
 	try {
-        offerService.updateOffer(offerid, newInformation);
+        offerService.updateOffer(id, newInformation);
     }
     catch(err){
         const errors = `FAILD to Update offer with id ${id}, err: ${error}`;
