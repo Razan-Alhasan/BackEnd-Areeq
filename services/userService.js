@@ -13,8 +13,26 @@ module.exports.getUserById = async (userId) => {
 	delete user.password;
 	return user;
 };
-module.exports.login = async (email, password) => {
-	return await User.login(email, password);
+module.exports.login = async (req, res, next) => {
+	try {
+		const user = await user.findOne({ email, password })
+		if (!user) {
+			res.status(401).json({
+				message: "Login not successful",
+				error: "User not found",
+			})
+		} else {
+			res.status(200).json({
+				message: "Login successful",
+				user,
+			})
+		}
+	} catch (error) {
+		res.status(400).json({
+			message: "An error occurred",
+			error: error.message,
+		});
+	}
 };
 module.exports.getAllUsers = () => {
 	const usersWithoutPassword = users.map(user => {
@@ -22,4 +40,4 @@ module.exports.getAllUsers = () => {
 		return userWithoutPassword;
 	});
 	return usersWithoutPassword;
-}
+};

@@ -3,6 +3,7 @@ const express = require('express');
 const userService = require('../services/userService');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const jwt = require('/utils/jwt');
 
 const handleLoginErrors = err => {
     let errors = {};
@@ -13,11 +14,6 @@ const handleLoginErrors = err => {
         errors['password'] = 'incorrect password';
     }
     return errors;
-};
-const createToken = user => {
-	return jwt.sign({ user }, 'private key', {
-		expiresIn: 3 * 24 * 60 * 60,
-	});
 };
 module.exports.login = async (req = express.request, res = express.response) => {
     try {
@@ -32,37 +28,14 @@ module.exports.login = async (req = express.request, res = express.response) => 
         res.status(400).json({ errors });
     }
 };
-const handleSignupErrors = err => {
-    let errors = {};
-    // handle email is exists in database
-    if (err.code && err.code === 11000 && err.keyPattern.email === 1) {
-        errors['email'] = 'this Email is Registered';
-        return errors;
-    }
-    // handle Error in User Model
-    if (err.message && err.message.includes('User validation failed')) {
-        Object.values(err.errors).forEach(({ path, message }) => {
-            errors[path] = message;
-        });
-    }
-    return errors;
-};
-module.exports.signup = async (req = express.request, res = express.response) => {
-    try {
-        const user = await userService.createUser({
-            ...req.body
-        });
-        const token = createToken(await user);
-        res.status(201).json({ token, user });
-    } catch (err) {
-        const errors = handleSignupErrors(err);
-        res.status(400).json({ errors });
-    }
-};
+
 module.exports.createUser = async (req = express.request, res = express.response) => {
     try {
-        userService.createUser(req.body);
+        let user = userService.createUser(req.body);
+        (await user).save();
         res.status(200).json(user);
+        const token = createToken(await user);
+        res.status(201).json({ token, user });
     }
     catch (err) {
         const error = `Failed to create user, error: ${err}`;
