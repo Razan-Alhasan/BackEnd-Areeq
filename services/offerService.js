@@ -6,8 +6,8 @@ module.exports.createOffer = async offerData => {
 module.exports.updateOffer = async (id, newInformation) => {
 	return await offer.findByIdAndUpdate(id, newInformation, { new: true });
 };
-module.exports.removeOffer = async offer_id => {
-	return await offer.deleteOne({ _id : offer_id });
+module.exports.removeOffer = async Offer_id => {
+	return await offer.deleteOne({ _id : Offer_id });
 };
 module.exports.getOfferById = async (id ) => { 
 	return await offer.findById(id);

@@ -11,9 +11,9 @@ module.exports.createOffer = async (req = express.request, res = express.respons
 		res.status(400).json({ error });
     }
 };
-module.exports.getOffer = async (req = express.request, res = express.response) =>{
+module.exports.getOfferById = async (req = express.request, res = express.response) =>{
     try {
-		const offer = await offerService.getOffer();
+		const offer = await offerService.getOfferById(id);
 		res.status(200).json(offer);
 	} catch (err) {
 		const error = `Failed to get offer, error: ${err}`;
@@ -22,18 +22,18 @@ module.exports.getOffer = async (req = express.request, res = express.response) 
 };
 module.exports.getAllOffers = async (req = express.request, res = express.response) =>{
     try {
-		const offer = await offerService.getAllOffers();
-		res.status(200).json(offer);
+		const offers = await offerService.getAllOffers();
+		res.status(200).json(offers);
 	} catch (err) {
-		const error = `Failed to get All offer, error: ${err}`;
+		const error = `Failed to get All offers, error: ${err}`;
 		res.status(400).json({ error });
 	}
 };
 module.exports.updateOffer = async (req = express.request, res = express.response) =>{
-    const Id = req.params.id;
+    const id = req.params.id;
     const newInformation = req.body;
 	try {
-        offerService.updateOffer(offerId, newInformation);
+        offerService.updateOffer(offerid, newInformation);
     }
     catch(err){
         const errors = `FAILD to Update offer with id ${id}, err: ${error}`;
