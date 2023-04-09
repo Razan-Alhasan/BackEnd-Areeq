@@ -1,23 +1,18 @@
-const User = require('../models/offerModel');
+const offer = require('../models/offerModel');
 
-module.exports.createoffer = async offerData => {
+module.exports.createOffer = async offerData => {
 	return await offer.create(offerData);
 };
-module.exports.updateoffer = async (id, newInformation) => {
+module.exports.updateOffer = async (id, newInformation) => {
 	return await offer.findByIdAndUpdate(id, newInformation, { new: true });
 };
-module.exports.removeoffer = async offer_id => {
+module.exports.removeOffer = async offer_id => {
 	return await offer.deleteOne({ _id : offer_id });
 };
-module.exports.getofferById = async (id ) => {
-	const offer = await offer.findById(id);
-    delete offer.password;
-    return offer; 
+module.exports.getOfferById = async (id ) => { 
+	return await offer.findById(id);
 };
-module.exports.getalloffers = () =>{
-const offersWithoutPassword = offers.map(offer => {
-	const { password, ...offerWithoutPassword } = offer.toObject();
-	return offerWithoutPassword;
-});
-	return offersWithoutPassword;
+module.exports.getAllOffers = async () =>{
+	const offers = await offer.find();
+    return offers; 
 }

@@ -2,22 +2,21 @@ const { Schema, model } = require('mongoose');
 const offerSchema = new Schema({
       value:{
         type: String,
-		required: [true],
+		    required: [true],
       },
-      startdate:{
+      startDate:{
         type: String,
-	    required: [true],
+	      required: [true],
       },
-      enddate:{
+      endDate:{
         type: String,
-		required: [true],
+		    required: [true],
       },
       id:{
         type: String,
-		required: [true],
+		    required: [true],
       },
 })
 
 const offer = model('offer', offerSchema);
 module.exports = offer;
-
