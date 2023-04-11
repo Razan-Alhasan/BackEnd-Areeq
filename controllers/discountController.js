@@ -2,8 +2,7 @@ const express = require('express');
 const discountService = require('../services/discountService');
 module.exports.createDiscount = async (req = express.request, res = express.response) => {
     try {
-        let discount = new Discount(req.body);
-        discount.save();
+        let discount = discountService.createDiscount(req.body);
         res.status(200).json(discount);
     } catch (err) {
         const error = `Failed to create discount , error: ${err}`;

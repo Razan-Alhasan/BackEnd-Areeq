@@ -31,6 +31,7 @@ const productSchema = new Schema({
     offer:{
         type: Schema.Types.ObjectId,
         ref: 'offer',
+        required: true,
     },
     user:{
         type: Schema.Types.ObjectId,
@@ -56,5 +57,5 @@ productSchema.post('remove', async function(next){
         next(error);
     }
 });
-const product = model('Product', productSchema);
+const product = model('product', productSchema);
 module.exports = product;

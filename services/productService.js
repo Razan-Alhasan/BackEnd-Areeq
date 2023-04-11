@@ -1,23 +1,22 @@
 const Product = require('../models/productModel');
-module.exports.getProducts = async () => {
-    return await Product.find().populate('offer').populate('user').populate('reviews')
+module.exports.getProducts = async (query) => {
+    return await Product.find(query).populate('offer').populate('user').populate('reviews')
 };
 module.exports.createProduct = async newProduct => {
 	return await Product.create(newProduct);  
 };
 module.exports.updateProduct = async (productId, updateFields) => {
-    return await Product.findByIdAndUpdate(productId, { $set: updateFields }, { new: true }); 
+    const updatedProduct = await Product.findByIdAndUpdate(productId, { $set: updateFields }, { new: true });
+    return updatedProduct;
 };
 module.exports.changeArchiveStatus = async productId => {  
-    const product = await Product.findById({productId}); 
+    const product = await Product.findById(productId);
+    if(!product) {
+        throw new Error(`Product with id ${productId} not found`);
+    } 
     product.isArchived = !product.isArchived;
-    await product.save();
-};
-module.exports.getProductsByCategory = async category => {
-    return await Product.find({category}); 
-};
-module.exports.getProductsBySeller = async userId => {
-    return await Product.find({userId }).populate('offer').populate('user').populate('reviews');
+    const updatedProduct = await product.save();
+    return updatedProduct;
 };
 module.exports.getProductById = async productId => {
 	return await Product.findById(productId);

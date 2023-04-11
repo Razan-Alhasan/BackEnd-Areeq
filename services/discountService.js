@@ -1,6 +1,6 @@
 const discount = require('../models/discountModel');
 module.exports.getDiscounts = async () => {
-    return await discount.find().populate('value');
+    return await discount.find().populate('offer');
 };
 module.exports.createDiscount = async newDiscount => {
     return await discount.create(newDiscount);

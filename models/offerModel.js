@@ -13,7 +13,7 @@ const offerSchema = new Schema({
         type: String,
 		    required: [true],
       },
-})
+});
 offerSchema.post('remove', async function(next){
   const offer = this;
   try{
