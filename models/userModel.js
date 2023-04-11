@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
-
+const reviewService = require('../services/reviewService');
 
 const userSchema = new Schema({
     firstName: {
@@ -42,7 +42,7 @@ const userSchema = new Schema({
      return `${this.firstName} ${this.lastName}`;
   });
 
-userSchema.pre(save, function(next) {
+userSchema.pre('save', function(next) {
     var user = this;
     if (!user.isModified('password')) return next();
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -55,13 +55,20 @@ userSchema.pre(save, function(next) {
 });
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });
 };
-
+userSchema.post('remove', async function(next){
+    const user = this;
+    try{
+        await reviewService.deleteReviewIfUserDeleted(user);
+        next();
+    }catch(error){
+        next(error);
+    }
+});
 const user = model('user', userSchema); 
 module.exports = user;
-

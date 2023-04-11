@@ -22,3 +22,13 @@ module.exports.getProductsBySeller = async userId => {
 module.exports.getProductById = async productId => {
 	return await Product.findById(productId);
 };
+module.exports.deleteReviewFromProduct = async review => {
+    return await Product.deleteMany(review)
+};
+module.exports.updateProductsIfOfferDeleted = async offer => {
+    return await Product.updateMany(offer, newOffer);
+};
+module.exports.deleteProductsIfSellerDeleted = async userId => {
+    const products = await Product.getProductsBySeller(userId);
+    return await Product.deleteMany(products);
+};

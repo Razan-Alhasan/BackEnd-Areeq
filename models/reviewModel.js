@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose');
 const productService = require('../services/productService');
-
 const reviewSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
@@ -25,12 +24,21 @@ const reviewSchema = new Schema({
 },
     { timestamps:true }
 );
-reviewSchema.post('save', async function(next){
+reviewSchema.post('save', async function(req,res,next){
     const review = this;
     try{
         const product = await productService.getProductById(review.product);
         product.reviews.push(review);
         await product.save();
+        next();
+    }catch(error){
+        next(error);
+    }
+});
+reviewSchema.post('remove', async function(next){
+    const review = this;
+    try{
+        await productService.deleteReview(review)
         next();
     }catch(error){
         next(error);

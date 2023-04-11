@@ -15,3 +15,18 @@ module.exports.deleteReview = async reviewId => {
 module.exports.getReviewById = async reviewId => {
 	return await Review.findById(reviewId);
 };
+module.exports.getReviewsByProduct = async product => {
+	return await Review.find(product);
+};
+module.exports.getReviewsByUser = async user => {
+	return await Review.find(user);
+};
+module.exports.deleteReviewIfProductDeleted = async product => {
+    const productReviews = this.getReviewsByProduct(product);
+	return await Review.deleteMany(productReviews);
+};
+module.exports.deleteReviewIfUserDeleted = async user => {
+    const userReviews = this.getReviewsBySeller(user);
+	return await Review.deleteMany(userReviews);
+};
+

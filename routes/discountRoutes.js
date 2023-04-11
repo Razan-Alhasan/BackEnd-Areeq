@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const discountController = require('../controller/discountController');
+const discountController = require('../controllers/discountController');
 router.get('/discounts', discountController.getDiscounts);
 router.get('/discount/:id', discountController.getDiscountById);
 router.delete('/discount/:id', discountController.deleteDiscount);

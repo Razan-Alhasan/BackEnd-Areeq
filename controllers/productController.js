@@ -22,7 +22,7 @@ module.exports.getProducts = async (req = express.request, res = express.respons
 };
 module.exports.getProductById = async (req = express.request, res = express.response) =>{
     try {
-		const product = await productService.getProductById();
+		const product = await productService.getProductById(req.params.id);
 		res.status(200).json(product);
 	} catch (err) {
 		const error = `Failed to get product, error: ${err}`;
@@ -44,7 +44,7 @@ module.exports.updateProduct = async (req = express.request, res = express.respo
     const id = req.params.id;
     const newInformation = req.body;
 	try {
-        productService.updateProduct(productId, newInformation);
+        productService.updateProduct(id, newInformation);
     }
     catch(error){
         const errors = `FAILD to Update Product with id ${id}, err: ${error}`;
@@ -53,7 +53,7 @@ module.exports.updateProduct = async (req = express.request, res = express.respo
 };
 module.exports.getProductsByCategory = async (req = express.request, res = express.response) =>{
     try{
-        const products = await productService.getProductsByCategory();
+        const products = await productService.getProductsByCategory(req.params.category);
 		res.status(200).json(products);
     }
     catch(err){
@@ -63,11 +63,41 @@ module.exports.getProductsByCategory = async (req = express.request, res = expre
 };
 module.exports.getProductsBySeller = async (req = express.request, res = express.response) =>{
     try{
-        const products = await productService.getProductsBySeller();
+        const products = await productService.getProductsBySeller(req.params.user);
 		res.status(200).json(products);
     }
     catch(err){
         const errors = `Failed to get product by seler, error: ${err}`;
+		res.status(400).json({ errors });
+    }
+};
+module.exports.deleteReviewFromProduct = async (req = express.request, res = express.response) =>{
+    try{
+        const products = await productService.deleteReviewFromProduct(req.params.review);
+		res.status(200).json(products);
+    }
+    catch(err){
+        const errors = `Failed to delete review, error: ${err}`;
+		res.status(400).json({ errors });
+    }
+};
+module.exports.updateProductsIfOfferDeleted = async (req = express.request, res = express.response) =>{
+    try{
+        const products = await productService.updateProductsIfOfferDeleted({offer: req.body.offer}, {offer:'0'});
+		res.status(200).json(products);
+    }
+    catch(err){
+        const errors = `Failed to delete offer, error: ${err}`;
+		res.status(400).json({ errors });
+    }
+};
+module.exports.deleteProductsIfSellerDeleted = async (req = express.request, res = express.response) =>{
+    try{
+        const products = await productService.deleteProductsIfSellerDeleted(req.params.user);
+		res.status(200).json(products);
+    }
+    catch(err){
+        const errors = `Failed to delete products, error: ${err}`;
 		res.status(400).json({ errors });
     }
 };

@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const reviewService = require ('../services/reviewService');
 const productSchema = new Schema({
     name:{
         type: String,
@@ -29,11 +30,11 @@ const productSchema = new Schema({
     }], 
     offer:{
         type: Schema.Types.ObjectId,
-        ref: 'Offer',
+        ref: 'offer',
     },
     user:{
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: [true, 'please add user ID']
     },
     reviews:[{
@@ -46,6 +47,14 @@ const productSchema = new Schema({
         required: true
     }
 });
-
+productSchema.post('remove', async function(next){
+    const product = this;
+    try{
+        await reviewService.deleteReviewIfProductDeleted(product);
+        next();
+    }catch(error){
+        next(error);
+    }
+});
 const product = model('Product', productSchema);
 module.exports = product;
