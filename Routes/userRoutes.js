@@ -1,13 +1,12 @@
 const express = require('express');
-const {model} = require('mongoose');
-const { model } = require('mongoose');
 const router = express.Router();
 const userController = require('../controller/userController');
+const authRequest = require("../middleware/authMiddleware");
 
-router.get('/user', userController.getuser); 
-router.post('/user', userController.createuser); 
-router.patch('/user/:id', userController.updateuser); 
-router.delete('user/:id',userController.deleteuser);
+router.get('/user/:id', authRequest, userController.getUserById);
+router.post('/user', userController.createUser);
+router.put("/user/:id", authRequest, userController.updateUser);
+router.delete("/user/:id", authRequest, userController.removeUser);
+router.post("/user/login", userController.login);
 
-
-model.exports = router;
+module.exports = router;
