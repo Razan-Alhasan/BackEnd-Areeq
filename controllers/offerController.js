@@ -1,10 +1,8 @@
-const offer = require('../models/offerModel');
 const offerService = require('../services/offerService');
 
 module.exports.createOffer = async (req = express.request, res = express.response) =>{
     try{
         const offer = await offerService.createOffer(req.body);
-        offer.save();
         res.status(200).json(offer);
     }catch (err) {
         const error = `Failed to create offer, error: ${err}`;
@@ -13,6 +11,7 @@ module.exports.createOffer = async (req = express.request, res = express.respons
 };
 module.exports.getOfferById = async (req = express.request, res = express.response) =>{
     try {
+        const id = req.params.id;
 		const offer = await offerService.getOfferById(id);
 		res.status(200).json(offer);
 	} catch (err) {
@@ -36,7 +35,7 @@ module.exports.updateOffer = async (req = express.request, res = express.respons
         offerService.updateOffer(id, newInformation);
     }
     catch(err){
-        const errors = `FAILD to Update offer with id ${id}, err: ${error}`;
+        const errors = `FAILD to Update offer with id ${id}, err: ${err}`;
 		res.status(400).json({ errors});
     }
 };
@@ -44,10 +43,10 @@ module.exports.deleteOffer = async (req = express.request, res = express.respons
     try{
         const id = req.params.id;
         await offerService.deleteOffer(id);
-        res.status(204);
+        res.status(200).json('Deleted Success');
     }
     catch(err){
-        const errors = `FAILD to delete this offer with id: ${id}, error:${err}`;
+        const errors = `FAILD to delete this offer, error:${err}`;
 		res.status(400).json({ errors});
     }
 };

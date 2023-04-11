@@ -3,8 +3,8 @@ const productService = require('../services/productService');
 
 module.exports.createProduct = async (req = express.request, res = express.response) =>{
     try{
-    let product = new product(req.body);
-        res.status(200).json(product);
+    let product = productService.createProduct(req.body);
+        res.status(200).json('product created successfuly');
     }catch (err) {
         const error = `Failed to create product, error: ${err}`;
 		res.status(400).json({ error });
@@ -12,7 +12,14 @@ module.exports.createProduct = async (req = express.request, res = express.respo
 };
 module.exports.getProducts = async (req = express.request, res = express.response) =>{
     try {
-		const products = await productService.getProducts();
+        let query = {};
+        if (req.query.category){
+            query = {category: req.query.category};
+        }
+        if (req.query.user){
+            query = {user: req.query.user};
+        }
+		const products = await productService.getProducts(query);
 		res.status(200).json(products);
 	} catch (err) {
 		const error = `Failed to get products, error: ${err}`;
@@ -32,7 +39,7 @@ module.exports.changeArchiveStatus = async (req = express.request, res = express
     try{
         const id = req.params.id;
         await productService.changeArchiveStatus(id);
-        res.status(204);
+        res.status(204).json("product is archived");
     }
     catch(err){
         const errors = `FAILD to delete this product ,error:${err}`;
@@ -43,37 +50,18 @@ module.exports.updateProduct = async (req = express.request, res = express.respo
     const id = req.params.id;
     const newInformation = req.body;
 	try {
-        productService.updateProduct(id, newInformation);
+        const updatedProduct = await productService.updateProduct(id, newInformation);
+        res.status(200).json(updatedProduct);
     }
     catch(error){
         const errors = `FAILD to Update Product with id ${id}, err: ${error}`;
 		res.status(400).json({ errors});
     }
 };
-module.exports.getProductsByCategory = async (req = express.request, res = express.response) =>{
-    try{
-        const products = await productService.getProductsByCategory(req.params.category);
-		res.status(200).json(products);
-    }
-    catch(err){
-        const errors = `FAILD to get Product  by category , err: ${err}`;
-		res.status(400).json({ errors });
-    }
-};
-module.exports.getProductsBySeller = async (req = express.request, res = express.response) =>{
-    try{
-        const products = await productService.getProductsBySeller(req.params.user);
-		res.status(200).json(products);
-    }
-    catch(err){
-        const errors = `Failed to get product by seler, error: ${err}`;
-		res.status(400).json({ errors });
-    }
-};
 module.exports.deleteReviewFromProduct = async (req = express.request, res = express.response) =>{
     try{
         const products = await productService.deleteReviewFromProduct(req.params.review);
-		res.status(200).json(products);
+		res.status(200).json(products,"review is deleted sucessfuly");
     }
     catch(err){
         const errors = `Failed to delete review, error: ${err}`;

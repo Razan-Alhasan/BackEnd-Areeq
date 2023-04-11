@@ -72,4 +72,3 @@ module.exports.deleteReviewIfUserDeleted = async (req = express.request, res = e
         res.status(404).json({ errors });
     }
 };
-

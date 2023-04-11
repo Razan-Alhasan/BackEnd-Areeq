@@ -21,12 +21,12 @@ module.exports.getReviewsByProduct = async product => {
 module.exports.getReviewsByUser = async user => {
 	return await Review.find(user);
 };
-module.exports.deleteReviewIfProductDeleted = async product => {
-    const productReviews = this.getReviewsByProduct(product);
+module.exports.deleteReviewIfProductDeleted = async productId => {
+    const productReviews = this.getReviewsByProduct(productId);
 	return await Review.deleteMany(productReviews);
 };
 module.exports.deleteReviewIfUserDeleted = async user => {
-    const userReviews = this.getReviewsBySeller(user);
+    const userReviews = this.getReviewsByUser(user);
 	return await Review.deleteMany(userReviews);
 };
 

@@ -8,7 +8,7 @@ const reviewSchema = new Schema({
     },
     product:{
         type: Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'product',
         required: [true, 'please add productId']
     },
     rate:{ 
@@ -24,8 +24,8 @@ const reviewSchema = new Schema({
 },
     { timestamps:true }
 );
-reviewSchema.post('save', async function(req,res,next){
-    const review = this;
+reviewSchema.post('save', async function(next){
+    let review = this;
     try{
         const product = await productService.getProductById(review.product);
         product.reviews.push(review);
@@ -38,11 +38,11 @@ reviewSchema.post('save', async function(req,res,next){
 reviewSchema.post('remove', async function(next){
     const review = this;
     try{
-        await productService.deleteReview(review)
+        await productService.deleteReviewFromProduct(review._id)
         next();
     }catch(error){
         next(error);
     }
 });
-const review = model('Review', reviewSchema);
+const review = model('review', reviewSchema);
 module.exports = review;
