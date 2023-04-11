@@ -35,7 +35,7 @@ const userSchema = new Schema({
         required: true,
     },
     isAdmin: {
-        type: boolean,
+        type: Boolean,
         required: true,
     },
 });
@@ -43,21 +43,14 @@ userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
 });
 
-userSchema.pre(save, function (next) {
-    var user = this;
-    if (!user.isModified('password')) return next();
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-        if (err) return next(err);
-        bcrypt.hash(user.password, salt, function (err, hash) {
-            if (err) return next(err);
-            user.password = hash;
-            next();
-        });
-    });
+userSchema.pre('save', async function (next) {
+	let salt = await bcrypt.genSalt();
+	this.password = await bcrypt.hash(this.password, salt);
+	next();
 });
+
 userSchema.methods.comparePasswords = async function (candidatePassword) {
-   const match = await bcrypt.compare(candidatePassword, this.password);
-   return match;
-};
+    return await bcrypt.compare(candidatePassword, this.password);
+}
 const user = model('user', userSchema);
 module.exports = user;

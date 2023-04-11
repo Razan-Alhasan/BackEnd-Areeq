@@ -6,7 +6,7 @@ module.exports.login = async (req = express.request, res = express.response) => 
     try {
         const response = await userService.login(req.body.email, req.body.password);
         if (response.result) {
-            const token = createToken(res.locals.userId);
+            const token = jwt.createToken({ userId: response.user._id });
             return res.status(200).json({ token });
         }
         res.status(401).json({ message: "Login failed" });
@@ -17,11 +17,9 @@ module.exports.login = async (req = express.request, res = express.response) => 
 
 module.exports.createUser = async (req = express.request, res = express.response) => {
     try {
-        let user = userService.createUser(req.body);
-        (await user).save();
-        res.status(200).json(user);
-        const token = createToken(await user);
-        res.status(201).json({ token, user });
+        const user = await userService.createUser(req.body);
+        const token = jwt.createToken({ userId: user._id });
+        res.status(201).json({ user, token });
     }
     catch (err) {
         const error = `Failed to create user, error: ${err}`;
@@ -41,7 +39,8 @@ module.exports.getUserById = async (req = express.request, res = express.respons
 module.exports.updateUser = async (req = express.request, res = express.response) => {
     const updateFields = req.body;
     try {
-        userService.updateUser(req.params.id, updateFields);
+        const updatedUser = await userService.updateUser(req.params.id, updateFields);
+        res.status(200).json(updatedUser);
     }
     catch (err) {
         const errors = `FAILD to Update user with id ${req.params.id}, err: ${error}`;

@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
-module.exports.createUser = async userData => {
+module.exports.createUser = async (userData) => {
 	return await User.create(userData);
+
 };
 module.exports.updateUser = async (id, updateFields) => {
 	return await User.findByIdAndUpdate(id, { $set: updateFields }, { new: true });
@@ -15,22 +16,22 @@ module.exports.getUserById = async (userId) => {
 };
 module.exports.login = async (email, password) => {
 	try {
-		const user = await User.findOne({ email })
+		const user = await User.findOne({ email });
 		if (!user) {
 			return {
 				result: false,
-				error: "User not found",
+				error: "failed to login, password or email is incorrect",
 			}
 		} else {
-			if (user.comparePasswords(password)) {
+			if (await user.comparePasswords(password)) {
 				return {
 					result: true,
-					error: null
+					user
 				}
 			}
 			else return {
-				result: "Login successful",
-				user,
+				result: false,
+				error: "failed to login, password or email is incorrect",
 			}
 		}
 	} catch (error) {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const productRoute = require('./routes/productRoutes');
+const userRoute = require('./routes/userRoutes');
 const cors = require('cors');
 const connectDb = async() => {
     try{
@@ -15,7 +16,8 @@ const connectDb = async() => {
 
 connectDb();
 const app = express();
-app.use('/', productRoute);
 app.use(cors());
 app.use(express.json());
+app.use('/', productRoute);
+app.use('/', userRoute);
 app.listen(process.env.PORT | '3000');
