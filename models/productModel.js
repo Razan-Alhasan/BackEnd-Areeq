@@ -12,7 +12,7 @@ const productSchema = new Schema({
     },
     category:{
         type:String,
-        enum:["Clothes" , "Home Decor" , "Jewelry" , "Soap", "Ceramic"],
+        enum:["Clothes" , "Home Decor" , "Accessories" , "Soap", "Ceramic"],
         required:[true, 'please choose the Category'],
     },
     price:{
@@ -39,7 +39,7 @@ const productSchema = new Schema({
     },
     reviews:[{
         type: Schema.Types.ObjectId,
-        ref: 'Review',
+        ref: 'review',
     }],
     isArchived:{
         type: Boolean,

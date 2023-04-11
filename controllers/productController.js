@@ -3,8 +3,7 @@ const productService = require('../services/productService');
 
 module.exports.createProduct = async (req = express.request, res = express.response) =>{
     try{
-    let product = new Product(req.body);
-        product.save();
+    let product = new product(req.body);
         res.status(200).json(product);
     }catch (err) {
         const error = `Failed to create product, error: ${err}`;
@@ -36,7 +35,7 @@ module.exports.changeArchiveStatus = async (req = express.request, res = express
         res.status(204);
     }
     catch(err){
-        const errors = `FAILD to delete this product with id: ${id},error:${err}`;
+        const errors = `FAILD to delete this product ,error:${err}`;
 		res.status(400).json({ errors});
     }
 };
