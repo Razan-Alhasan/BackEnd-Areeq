@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
-
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
     firstName: {
@@ -11,57 +11,53 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-	email: {
-	    type: String,
-		required: true,
-		validate: {
+    email: {
+        type: String,
+        required: true,
+        validate: {
             validator: validator.isEmail,
             message: '{value} is not a valid email',
-            isAsync: false},
-		unique: true,
-	},
-	password: {
-		type: String,
-		required: true,
-		minlength: 6,
+            isAsync: false
+        },
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
     },
     photo: {
-		type: String,
+        type: String,
         required: true,
-	},
+    },
     link: {
-        type : String,
+        type: String,
         required: true,
     },
-    type: {
-        type : String,
+    isAdmin: {
+        type: boolean,
         required: true,
     },
-  });
-  userSchema.virtual('fullName').get(function() {
-     return `${this.firstName} ${this.lastName}`;
-  });
+});
+userSchema.virtual('fullName').get(function () {
+    return `${this.firstName} ${this.lastName}`;
+});
 
-userSchema.pre(save, function(next) {
+userSchema.pre(save, function (next) {
     var user = this;
     if (!user.isModified('password')) return next();
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function(err, hash) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err) return next(err);
-        user.password = hash;
-        next();
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+        });
     });
 });
-});
-
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
+userSchema.methods.comparePasswords = async function (candidatePassword) {
+   const match = await bcrypt.compare(candidatePassword, this.password);
+   return match;
 };
-
-const user = model('user', userSchema); 
+const user = model('user', userSchema);
 module.exports = user;
-

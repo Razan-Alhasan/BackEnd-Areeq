@@ -13,25 +13,31 @@ module.exports.getUserById = async (userId) => {
 	delete user.password;
 	return user;
 };
-module.exports.login = async (req, res, next) => {
+module.exports.login = async (email, password) => {
 	try {
-		const user = await user.findOne({ email, password })
+		const user = await User.findOne({ email })
 		if (!user) {
-			res.status(401).json({
-				message: "Login not successful",
+			return {
+				result: false,
 				error: "User not found",
-			})
+			}
 		} else {
-			res.status(200).json({
-				message: "Login successful",
+			if (user.comparePasswords(password)) {
+				return {
+					result: true,
+					error: null
+				}
+			}
+			else return {
+				result: "Login successful",
 				user,
-			})
+			}
 		}
 	} catch (error) {
-		res.status(400).json({
-			message: "An error occurred",
+		return {
+			result: false,
 			error: error.message,
-		});
+		};
 	}
 };
 module.exports.getAllUsers = () => {

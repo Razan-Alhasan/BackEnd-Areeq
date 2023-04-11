@@ -1,31 +1,17 @@
 const userService = require('../services/userService');
 const express = require('express');
-const userService = require('../services/userService');
-const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const jwt = require('/utils/jwt');
+const jwt = require('../utils/jwt');
 
-const handleLoginErrors = err => {
-    let errors = {};
-    if (err.message.includes('Incorrect Email')) {
-        errors['email'] = 'email is not found';
-    }
-    if (err.message.includes('Incorrect Password')) {
-        errors['password'] = 'incorrect password';
-    }
-    return errors;
-};
 module.exports.login = async (req = express.request, res = express.response) => {
     try {
-        const isUser = await userService.login(req.body.email, req.body.password);
-        if (isUser) {
-            const token = createToken(isUser);
-            return res.status(200).json({ token, isUser });
+        const response = await userService.login(req.body.email, req.body.password);
+        if (response.result) {
+            const token = createToken(res.locals.userId);
+            return res.status(200).json({ token });
         }
-        res.status(200).json({ isUser });
+        res.status(401).json({ message: "Login failed" });
     } catch (err) {
-        const errors = handleLoginErrors(err);
-        res.status(400).json({ errors });
+        res.status(400).json({ error: err.message });
     }
 };
 

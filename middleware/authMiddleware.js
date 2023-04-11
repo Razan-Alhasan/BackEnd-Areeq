@@ -2,13 +2,13 @@ const jwt = require('/utils/jwt');
 const User = require('../model/userModel');
 const express = require('express');
 
-module.exports.authRequest = (req = express.request, res = express.response, next) => {
+module.exports = (req = express.request, res = express.response, next) => {
     const bearerToken = req.header('Authorization');
     const token = bearerToken.split(' ')[1];
     if (token) {
         try {
             const decodeJwt = jwt.verifyToken(token);
-            res.locals.userID = decodeJwt.user._id;
+            res.locals.userId = decodeJwt.user._id;
             return next();
         } catch (e) {
             return res.status(401).json({ errors: 'The token not valid !' });
