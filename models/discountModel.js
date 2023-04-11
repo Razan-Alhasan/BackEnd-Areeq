@@ -3,13 +3,12 @@ const discountSchema = new Schema({
     code: {
         type: String,
         required: [true, 'Please enter the code']
-
     },
-    value: {
+    offer: {
         type: Schema.Types.ObjectId,
-        ref: 'Offer',
+        ref: 'offer',
         required: [true, 'Please enter the value']
     }
-})
-const discount = model('Discount', discountSchema);
+});
+const discount = model('discount', discountSchema);
 module.exports = discount;

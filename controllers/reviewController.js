@@ -3,7 +3,7 @@ const reviewService = require('../services/reviewService');
 
 module.exports.createReview = async (req = express.request, res = express.response) =>{
     try{
-        let review = await reviewService.createReview(req.body);
+        const review = await reviewService.createReview(req.body);
         res.status(200).json(review);
     }catch (err) {
         const error = `Failed to add review, error: ${err.message}`;
@@ -33,6 +33,7 @@ module.exports.updateReview = async (req = express.request, res = express.respon
     const newInformation = req.body;
 	try {
         reviewService.updateReview(id, newInformation);
+        res.status(200).json({message: "updated successfully"})
     }
     catch(error){
         const errors = `FAILD to Update review with id ${id}, err: ${error.message}`;
@@ -72,4 +73,3 @@ module.exports.deleteReviewIfUserDeleted = async (req = express.request, res = e
         res.status(404).json({ errors });
     }
 };
-

@@ -2,8 +2,7 @@ const express = require('express');
 const discountService = require('../services/discountService');
 module.exports.createDiscount = async (req = express.request, res = express.response) => {
     try {
-        let discount = new Discount(req.body);
-        discount.save();
+        const discount = discountService.createDiscount(req.body);
         res.status(200).json(discount);
     } catch (err) {
         const error = `Failed to create discount , error: ${err}`;
@@ -42,7 +41,7 @@ module.exports.deleteDiscount = async (req = express.request, res = express.resp
 module.exports.updateById = async (req = express.request, res = express.response) => {
     try {
         const discount = await discountService.updateById(req.params.id, req.body);
-        res.status(200).json({ discount });
+        res.status(200).json(discount);
     } catch (e) {
         const errors = `faild to update discount with id ${req.params.id}, err" ${e.message}`;
         res.status(400).json({ errors });

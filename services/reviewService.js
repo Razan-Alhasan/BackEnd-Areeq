@@ -7,7 +7,8 @@ module.exports.createReview = async newReview => {
 	return await Review.create(newReview);  
 };
 module.exports.updateReview = async (reviewId, updateField) => {
-    return await Review.findByIdAndUpdate(reviewId, { $set: updateField }, { new: true }); 
+    const updatedReview =  await Review.findByIdAndUpdate(reviewId, { $set: updateField }, { new: true });
+	return updatedReview; 
 };
 module.exports.deleteReview = async reviewId => {  
     return await Review.findByIdAndDelete(reviewId);
@@ -21,12 +22,12 @@ module.exports.getReviewsByProduct = async product => {
 module.exports.getReviewsByUser = async user => {
 	return await Review.find(user);
 };
-module.exports.deleteReviewIfProductDeleted = async product => {
-    const productReviews = this.getReviewsByProduct(product);
+module.exports.deleteReviewIfProductDeleted = async productId => {
+    const productReviews = this.getReviewsByProduct(productId);
 	return await Review.deleteMany(productReviews);
 };
 module.exports.deleteReviewIfUserDeleted = async user => {
-    const userReviews = this.getReviewsBySeller(user);
+    const userReviews = this.getReviewsByUser(user);
 	return await Review.deleteMany(userReviews);
 };
 

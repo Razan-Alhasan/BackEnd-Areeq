@@ -13,11 +13,11 @@ const offerSchema = new Schema({
         type: String,
 		    required: [true],
       },
-})
-offerSchema.post('remove', async function(next){
+});
+offerSchema.pre('remove', async function(next){
   const offer = this;
   try{
-      await productService.deleteOffer(offer);
+      await productService.updateProductsIfOfferDeleted(offer._id, offer.value);
       next();
   }catch(error){
       next(error);

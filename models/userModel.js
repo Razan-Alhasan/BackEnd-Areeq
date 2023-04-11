@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
 const reviewService = require('../services/reviewService');
+const productService = require('../services/productService');
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema({
     firstName: {
@@ -11,64 +13,65 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-	email: {
-	    type: String,
-		required: true,
-		validate: {
+    email: {
+        type: String,
+        required: true,
+        validate: {
             validator: validator.isEmail,
             message: '{value} is not a valid email',
-            isAsync: false},
-		unique: true,
-	},
-	password: {
-		type: String,
-		required: true,
-		minlength: 6,
+            isAsync: false
+        },
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 6,
     },
     photo: {
-		type: String,
+        type: String,
         required: true,
-	},
+    },
     link: {
-        type : String,
+        type: String,
         required: true,
     },
-    type: {
-        type : String,
+    isAdmin: {
+        type: Boolean,
         required: true,
     },
-  });
-  userSchema.virtual('fullName').get(function() {
-     return `${this.firstName} ${this.lastName}`;
-  });
 
-userSchema.pre('save', function(next) {
-    var user = this;
-    if (!user.isModified('password')) return next();
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) return next(err);
-        user.password = hash;
-        next();
-    });
 });
+userSchema.virtual('fullName').get(function () {
+    return `${this.firstName} ${this.lastName}`;
 });
-
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
-};
 userSchema.post('remove', async function(next){
     const user = this;
     try{
-        await reviewService.deleteReviewIfUserDeleted(user);
+        await productService.deleteProductsIfSellerDeleted(user._id);
         next();
     }catch(error){
         next(error);
     }
 });
-const user = model('user', userSchema); 
+userSchema.post('remove', async function(next){
+    const user = this;
+    try{
+        await reviewService.deleteReviewIfUserDeleted(user._id);
+        next();
+    }catch(error){
+        next(error);
+    }
+});
+userSchema.pre('save', async function (next) {
+    let salt = await bcrypt.genSalt();
+	this.password = await bcrypt.hash(this.password, salt);
+	next();
+});
+
+userSchema.methods.comparePasswords = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+}
+const user = model('user', userSchema);
 module.exports = user;
+
