@@ -38,6 +38,12 @@ const userSchema = new Schema({
         type: Boolean,
         required: true,
     },
+    type: {
+        type: Boolean,
+        required: true,
+        enum: ["seller", "user"],
+        default: user,
+    }
 });
 userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
