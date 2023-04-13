@@ -44,30 +44,30 @@ module.exports.deleteReview = async (req = express.request, res = express.respon
     try {
         const result = await reviewService.deleteReview(req.params.id);
         result.deletedCount != 0
-            ? res.status(202).json('Deleted Success')
-            : res.status(400).json('Faild to delete the review');
+            ? res.status(202).json({message: 'Deleted Success'})
+            : res.status(400).json({message: 'Faild to delete the review'});
     } catch (e) {
         const errors = `Faild to delete review with Id ${req.params.id}, error: ${e.message}`;
         res.status(404).json({ errors });
     }
 };
-module.exports.deleteReviewIfProductDeleted = async (req = express.request, res = express.response) => {
+module.exports.deleteReviewsIfProductDeleted = async (req = express.request, res = express.response) => {
     try {
         const result = await reviewService.deleteReviewIfProductDeleted(req.params.product);
         result.deletedCount != 0
-            ? res.status(202).json('Deleted Success')
-            : res.status(400).json('Faild to delete the review');
+            ? res.status(202).json({message: 'Deleted Success'})
+            : res.status(400).json({message: 'Faild to delete the review'});
     } catch (e) {
         const errors = `Faild to delete reviews, error: ${e.message}`;
         res.status(404).json({ errors });
     }
 };
-module.exports.deleteReviewIfUserDeleted = async (req = express.request, res = express.response) => {
+module.exports.deleteReviewsIfUserDeleted = async (req = express.request, res = express.response) => {
     try {
         const result = await reviewService.deleteReviewIfUserDeleted(req.params.user);
         result.deletedCount != 0
-            ? res.status(202).json('Deleted Success')
-            : res.status(400).json('Faild to delete the review');
+            ? res.status(202).json({message: 'Deleted Success'})
+            : res.status(400).json({message: 'Faild to delete the review'});
     } catch (e) {
         const errors = `Faild to delete reviews, error: ${e.message}`;
         res.status(404).json({ errors });

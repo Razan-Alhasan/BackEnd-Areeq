@@ -24,9 +24,8 @@ module.exports.getProductById = async productId => {
 module.exports.deleteReviewFromProduct = async review => {
     return await Product.deleteMany(review)
 };
-module.exports.updateProductsIfOfferDeleted = async (offer,newOffer) => {
-    const result = await Product.updateMany(offer, newOffer);
-    return result;
+module.exports.deleteOfferFromProducts = async (offer) => {
+    return await Product.deleteMany(offer);
 };
 module.exports.getProductsBySeller = async userId => {
     return await Product.find({userId }).populate('offer').populate('user').populate('reviews');

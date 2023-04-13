@@ -45,22 +45,30 @@ const userSchema = new Schema({
 userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
 });
-userSchema.post('remove', async function(next){
+userSchema.pre('remove', async function(req,res,next){
     const user = this;
     try{
         await productService.deleteProductsIfSellerDeleted(user._id);
-        next();
+        if (typeof next === 'function') {
+            next();
+        }
     }catch(error){
-        next(error);
+        if (typeof next === 'function') {
+            next(error);
+        }
     }
 });
-userSchema.post('remove', async function(next){
+userSchema.pre('remove', async function(req,res,next){
     const user = this;
     try{
         await reviewService.deleteReviewIfUserDeleted(user._id);
-        next();
+        if (typeof next === 'function') {
+            next();
+        }
     }catch(error){
-        next(error);
+        if (typeof next === 'function') {
+            next(error);
+        }
     }
 });
 userSchema.pre('save', async function (next) {

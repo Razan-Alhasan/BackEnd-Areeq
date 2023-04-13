@@ -22,11 +22,11 @@ module.exports.getReviewsByProduct = async product => {
 module.exports.getReviewsByUser = async user => {
 	return await Review.find(user);
 };
-module.exports.deleteReviewIfProductDeleted = async productId => {
+module.exports.deleteReviewsIfProductDeleted = async productId => {
     const productReviews = this.getReviewsByProduct(productId);
 	return await Review.deleteMany(productReviews);
 };
-module.exports.deleteReviewIfUserDeleted = async user => {
+module.exports.deleteReviewsIfUserDeleted = async user => {
     const userReviews = this.getReviewsByUser(user);
 	return await Review.deleteMany(userReviews);
 };

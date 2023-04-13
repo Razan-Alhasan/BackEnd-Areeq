@@ -17,7 +17,7 @@ const offerSchema = new Schema({
 offerSchema.pre('remove', async function(next){
   const offer = this;
   try{
-      await productService.updateProductsIfOfferDeleted(offer._id, offer.value);
+      await productService.deleteOfferFromProducts(offer._id);
       next();
   }catch(error){
       next(error);

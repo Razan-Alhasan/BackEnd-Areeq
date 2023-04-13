@@ -44,7 +44,7 @@ module.exports.deleteOffer = async (req = express.request, res = express.respons
     try{
         const id = req.params.id;
         await offerService.deleteOffer(id);
-        res.status(200).json('Deleted Success');
+        res.status(200).json({message: 'Deleted Success'});
     }
     catch(err){
         const errors = `FAILD to delete this offer, error:${err}`;
