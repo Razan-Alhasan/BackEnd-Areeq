@@ -4,7 +4,7 @@ const reviewService = require('../services/reviewService');
 module.exports.createReview = async (req = express.request, res = express.response) =>{
     try{
         const review = await reviewService.createReview(req.body);
-        res.status(200).json(review);
+        res.status(201).json(review);
     }catch (err) {
         const error = `Failed to add review, error: ${err.message}`;
 		res.status(400).json({ error });
@@ -44,7 +44,7 @@ module.exports.deleteReview = async (req = express.request, res = express.respon
     try {
         const result = await reviewService.deleteReview(req.params.id);
         result.deletedCount != 0
-            ? res.status(202).json({message: 'Deleted Success'})
+            ? res.status(204).json({message: 'Deleted Success'})
             : res.status(400).json({message: 'Faild to delete the review'});
     } catch (e) {
         const errors = `Faild to delete review with Id ${req.params.id}, error: ${e.message}`;

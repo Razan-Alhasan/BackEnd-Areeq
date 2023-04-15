@@ -3,7 +3,7 @@ const offerService = require('../services/offerService');
 module.exports.createOffer = async (req = express.request, res = express.response) =>{
     try{
         const offer = await offerService.createOffer(req.body);
-        res.status(200).json(offer);
+        res.status(201).json(offer);
     }catch (err) {
         const error = `Failed to create offer, error: ${err}`;
 		res.status(400).json({ error });
@@ -44,7 +44,7 @@ module.exports.deleteOffer = async (req = express.request, res = express.respons
     try{
         const id = req.params.id;
         await offerService.deleteOffer(id);
-        res.status(200).json({message: 'Deleted Success'});
+        res.status(204).json({message: 'Deleted Success'});
     }
     catch(err){
         const errors = `FAILD to delete this offer, error:${err}`;
