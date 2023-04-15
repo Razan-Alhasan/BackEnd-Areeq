@@ -2,9 +2,8 @@ const express = require('express');
 const discountService = require('../services/discountService');
 module.exports.createDiscount = async (req = express.request, res = express.response) => {
     try {
-        let discount = new Discount(req.body);
-        discount.save();
-        res.status(200).json(discount);
+        let discount = discountService.createDiscount(req.body);
+        res.status(201).json(discount);
     } catch (err) {
         const error = `Failed to create discount , error: ${err}`;
         res.status(400).json({ error });
@@ -32,8 +31,8 @@ module.exports.deleteDiscount = async (req = express.request, res = express.resp
     try {
         const result = await discountService.deleteDiscount(req.params.id);
         result.deletedCount != 0
-            ? res.status(202).json('Deleted Success')
-            : res.status(400).json('Faild to delete the discount');
+            ? res.status(204).json({message: 'Deleted Success'})
+            : res.status(400).json({message: 'Faild to delete the discount'});
     } catch (e) {
         const errors = `Faild to delete discount with Id ${req.params.id}, error: ${e.message}`;
         res.status(400).json({ errors });
@@ -42,7 +41,7 @@ module.exports.deleteDiscount = async (req = express.request, res = express.resp
 module.exports.updateById = async (req = express.request, res = express.response) => {
     try {
         const discount = await discountService.updateById(req.params.id, req.body);
-        res.status(200).json({ discount });
+        res.status(200).json(discount);
     } catch (e) {
         const errors = `faild to update discount with id ${req.params.id}, err" ${e.message}`;
         res.status(400).json({ errors });

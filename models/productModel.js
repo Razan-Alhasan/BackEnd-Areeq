@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const reviewService = require ('../services/reviewService');
 const productSchema = new Schema({
     name:{
         type: String,
@@ -11,7 +12,7 @@ const productSchema = new Schema({
     },
     category:{
         type:String,
-        enum:["Clothes" , "Home Decor" , "Jewelry" , "Soap", "Ceramic"],
+        enum:["Clothes" , "Home Decor" , "Accessories" , "Soap", "Ceramic"],
         required:[true, 'please choose the Category'],
     },
     price:{
@@ -29,16 +30,17 @@ const productSchema = new Schema({
     }], 
     offer:{
         type: Schema.Types.ObjectId,
-        ref: 'Offer',
+        ref: 'offer',
+        required: [true],
     },
     user:{
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: [true, 'please add user ID']
     },
     reviews:[{
         type: Schema.Types.ObjectId,
-        ref: 'Review',
+        ref: 'review',
     }],
     isArchived:{
         type: Boolean,
@@ -46,6 +48,14 @@ const productSchema = new Schema({
         required: true
     }
 });
-
-const product = model('Product', productSchema);
+productSchema.post('remove', async function(next){
+    const product = this;
+    try{
+        await reviewService.deleteReviewIfProductDeleted(product._id);
+        next();
+    }catch(error){
+        next(error);
+    }
+});
+const product = model('product', productSchema);
 module.exports = product;
