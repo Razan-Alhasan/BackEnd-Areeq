@@ -40,7 +40,10 @@ const userSchema = new Schema({
         type: Boolean,
         required: true,
     },
-
+    type: {
+        type: Boolean,
+        required: true,
+    }
 });
 userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
