@@ -30,4 +30,3 @@ module.exports.deleteReviewsIfUserDeleted = async user => {
     const userReviews = this.getReviewsByUser(user);
 	return await Review.deleteMany(userReviews);
 };
-
