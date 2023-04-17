@@ -35,6 +35,16 @@ module.exports.getUserById = async (req = express.request, res = express.respons
         res.status(400).json({ error });
     }
 };
+module.exports.getUserById = async (req = express.request, res = express.response) => {
+    try {
+        const user = await userService.getUserById(req.locals.userId);
+        res.status(200).json(user);
+    }
+    catch (err) {
+        const error = `Failed to get user, error: ${err}`;
+        res.status(400).json({ error });
+    }
+};
 module.exports.updateUser = async (req = express.request, res = express.response) => {
     const updateFields = req.body;
     try {
