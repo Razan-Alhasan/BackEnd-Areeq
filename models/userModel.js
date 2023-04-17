@@ -38,6 +38,10 @@ const userSchema = new Schema({
         type: Boolean,
         required: true,
     },
+    isSeller: {
+        type: Boolean,
+        required: true,
+    }
 });
 userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
