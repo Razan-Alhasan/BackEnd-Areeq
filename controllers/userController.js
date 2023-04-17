@@ -27,16 +27,6 @@ module.exports.createUser = async (req = express.request, res = express.response
 };
 module.exports.getUserById = async (req = express.request, res = express.response) => {
     try {
-        const user = await userService.getUserById(req.params.id);
-        res.status(200).json(user);
-    }
-    catch (err) {
-        const error = `Failed to get user, error: ${err}`;
-        res.status(400).json({ error });
-    }
-};
-module.exports.getUserById = async (req = express.request, res = express.response) => {
-    try {
         const user = await userService.getUserById(req.locals.userId);
         res.status(200).json(user);
     }
