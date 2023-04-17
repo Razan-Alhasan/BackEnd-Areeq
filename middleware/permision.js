@@ -1,4 +1,4 @@
-module.exports = function authorizationCheck(req, res, next) {
+module.exports.sellerAuth = (req, res, next) => {
     if (!req.user.isAdmin) { 
      return res.sendStatus(401);
     } else {
@@ -7,7 +7,7 @@ module.exports = function authorizationCheck(req, res, next) {
     } 
   };
 
-  module.exports = function authorizationCheck(req, res, next) {
+  module.exports.adminAuth = (req, res, next) => {
     if (!req.user.isSeller) { 
      return res.sendStatus(401);
     } else {

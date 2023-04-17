@@ -37,7 +37,7 @@ module.exports.getUserById = async (req = express.request, res = express.respons
 };
 module.exports.getCurrentUser = async (req = express.request, res = express.response) => {
     try {
-        const user = await userService.getCurrentUser(req.locals.userId);
+        const user = await userService.getUserById(req.locals.userId);
         res.status(200).json(user);
     }
     catch (err) {

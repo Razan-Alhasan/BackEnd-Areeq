@@ -40,7 +40,7 @@ const userSchema = new Schema({
         type: Boolean,
         required: true,
     },
-    type: {
+    isSeller: {
         type: Boolean,
         required: true,
     }
