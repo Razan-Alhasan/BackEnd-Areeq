@@ -2,8 +2,8 @@ const express = require('express');
 const productService = require('../services/productService');
 
 module.exports.createProduct = async (req = express.request, res = express.response) =>{
-    try{
-    const productData = {...req.body, user: res.locals.userId};    
+    try{ 
+    const productData = {...req.body, user: res.locals.userId};
     const product = await productService.createProduct(req.productData);
         res.status(201).json(product);
     }catch (err) {
