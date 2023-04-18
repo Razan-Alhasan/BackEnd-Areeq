@@ -48,27 +48,27 @@ const userSchema = new Schema({
 userSchema.virtual('fullName').get(function () {
     return `${this.firstName} ${this.lastName}`;
 });
-userSchema.pre('remove', async function(req,res,next){
+userSchema.pre('remove', async function (req, res, next) {
     const user = this;
-    try{
+    try {
         await productService.deleteProductsIfSellerDeleted(user._id);
         if (typeof next === 'function') {
             next();
         }
-    }catch(error){
+    } catch (error) {
         if (typeof next === 'function') {
             next(error);
         }
     }
 });
-userSchema.pre('remove', async function(req,res,next){
+userSchema.pre('remove', async function (req, res, next) {
     const user = this;
-    try{
+    try {
         await reviewService.deleteReviewIfUserDeleted(user._id);
         if (typeof next === 'function') {
             next();
         }
-    }catch(error){
+    } catch (error) {
         if (typeof next === 'function') {
             next(error);
         }
@@ -76,8 +76,8 @@ userSchema.pre('remove', async function(req,res,next){
 });
 userSchema.pre('save', async function (next) {
     let salt = await bcrypt.genSalt();
-	this.password = await bcrypt.hash(this.password, salt);
-	next();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 userSchema.methods.comparePasswords = async function (candidatePassword) {

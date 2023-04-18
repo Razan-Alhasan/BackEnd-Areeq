@@ -59,7 +59,7 @@ module.exports.updateUser = async (req = express.request, res = express.response
 module.exports.removeUser = async (req = express.request, res = express.response) => {
     try {
         await userService.removeUser(req.params.id);
-        res.status(204).json({message: "deleted successfully"});
+        res.status(204).json({ message: "deleted successfully" });
     }
     catch (err) {
         const errors = `FAILD to delete this user with id: ${req.params.id}, error:${err}`;
