@@ -58,17 +58,13 @@ userSchema.pre('remove', async function(req,res,next){
         }
     }
 });
-userSchema.pre('remove', async function(req,res,next){
+userSchema.pre('remove', async function(next){
     const user = this;
     try{
-        await reviewService.deleteReviewIfUserDeleted(user._id);
-        if (typeof next === 'function') {
-            next();
-        }
+        await reviewService.deleteReviewsIfUserDeleted(user._id);
+        next();
     }catch(error){
-        if (typeof next === 'function') {
-            next(error);
-        }
+        next(error);
     }
 });
 userSchema.pre('save', async function (next) {
@@ -82,4 +78,3 @@ userSchema.methods.comparePasswords = async function (candidatePassword) {
 }
 const user = model('user', userSchema);
 module.exports = user;
-

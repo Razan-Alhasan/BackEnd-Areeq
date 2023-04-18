@@ -24,33 +24,26 @@ const reviewSchema = new Schema({
 },
     { timestamps:true }
 );
-reviewSchema.pre('save', async function(req,res,next){
+reviewSchema.pre('save', async function(next){
     let review = this;
     try{
         const product = await productService.getProductById(review.product._id);
         product.reviews.push(review);
         await product.save();
-        if (typeof next === 'function') {
-            next();
-        }
+        next();
     }catch(error){
-        if (typeof next === 'function') {
-            next(error);
-        }
+        next(error);
     }
 });
-reviewSchema.pre('remove', async function(req,res,next){
+reviewSchema.pre('remove', async function(next){
     const review = this;
     try{
         const product = await productService.deleteReviewFromProduct(review._id);
         await product.save();
-        if (typeof next === 'function') {
-            next();
-        }
+        next();
     }catch(error){
-        if (typeof next === 'function') {
-            next(error);
-        }
+        next(error);
+        
     }
 });
 const review = model('review', reviewSchema);
