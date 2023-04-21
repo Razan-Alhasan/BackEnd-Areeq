@@ -2,7 +2,8 @@ const offerService = require('../services/offerService');
 
 module.exports.createOffer = async (req = express.request, res = express.response) =>{
     try{
-        const offer = await offerService.createOffer(req.body);
+        const offerData = {...req.body, user: res.locals.userId};
+        const offer = await offerService.createOffer(offerData);
         res.status(201).json(offer);
     }catch (err) {
         const error = `Failed to create offer, error: ${err}`;
