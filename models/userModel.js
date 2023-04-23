@@ -61,6 +61,7 @@ userSchema.pre('remove', async function (req, res, next) {
         }
     }
 });
+
 userSchema.pre('remove', async function (req, res, next) {
     const user = this;
     try {
@@ -72,8 +73,9 @@ userSchema.pre('remove', async function (req, res, next) {
         if (typeof next === 'function') {
             next(error);
         }
-    }
+     }
 });
+
 userSchema.pre('save', async function (next) {
     let salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
@@ -85,4 +87,3 @@ userSchema.methods.comparePasswords = async function (candidatePassword) {
 }
 const user = model('user', userSchema);
 module.exports = user;
-

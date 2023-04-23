@@ -51,7 +51,7 @@ const productSchema = new Schema({
 productSchema.post('remove', async function(next){
     const product = this;
     try{
-        await reviewService.deleteReviewIfProductDeleted(product._id);
+        await reviewService.deleteReviewsIfProductDeleted(product._id);
         next();
     }catch(error){
         next(error);

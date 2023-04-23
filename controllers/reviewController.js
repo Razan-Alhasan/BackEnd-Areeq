@@ -3,7 +3,8 @@ const reviewService = require('../services/reviewService');
 
 module.exports.createReview = async (req = express.request, res = express.response) =>{
     try{
-        const review = await reviewService.createReview(req.body);
+        const reviewData = {...req.body, user: res.locals.userId};
+        const review = await reviewService.createReview(reviewData);
         res.status(201).json(review);
     }catch (err) {
         const error = `Failed to add review, error: ${err.message}`;
