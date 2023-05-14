@@ -30,15 +30,15 @@ const userSchema = new Schema({
     },
     photo: {
         type: String,
-        required: true,
     },
     link: {
         type: String,
-        required: true,
     },
     isAdmin: {
         type: Boolean,
-        required: true,
+    },
+    description: {
+        type: String,
     },
     isSeller: {
         type: Boolean,
