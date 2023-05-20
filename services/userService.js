@@ -1,3 +1,4 @@
+const user = require('../models/userModel');
 const User = require('../models/userModel');
 module.exports.createUser = async (userData) => {
 	return await User.create(userData);
@@ -14,6 +15,11 @@ module.exports.getUserById = async (userId) => {
 	delete user.password;
 	return user;
 };
+module.exports.getSellers = async () => {
+	const seller = await User.findById(userId);	
+};
+
+
 module.exports.login = async (email, password) => {
 	try {
 		const user = await User.findOne({ email });
@@ -41,10 +47,7 @@ module.exports.login = async (email, password) => {
 		};
 	}
 };
-module.exports.getAllUsers = () => {
-	const usersWithoutPassword = users.map(user => {
-		const { password, ...userWithoutPassword } = user.toObject();
-		return userWithoutPassword;
-	});
-	return usersWithoutPassword;
+module.exports.getAllUsers = (query) => {
+    const users = user.find({ ...query, isSeller: true });
+    return users;
 };

@@ -66,3 +66,21 @@ module.exports.removeUser = async (req = express.request, res = express.response
         res.status(400).json({ errors });
     }
 };
+
+module.exports.getAllUsers = async (req = express.request, res = express.response) => {
+    try {
+        let query = {};
+        if (req.query.seller) {
+            query = { isSeller: true };
+        }
+        if (req.query.user) {
+            query = { user: req.query.user };
+        }
+        const sellers = await userService.getAllUsers(query);
+        res.status(200).json(sellers);
+    } catch (err) {
+        const error = `Failed to get seller users, error: ${err}`;
+        res.status(400).json({ error });
+    }
+};
+
