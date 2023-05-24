@@ -19,7 +19,7 @@ module.exports.changeArchiveStatus = async productId => {
     return updatedProduct;
 };
 module.exports.getProductById = async productId => {
-	return await Product.findById(productId);
+	return await Product.findById(productId).populate('reviews').populate('user').populate('offer');
 };
 module.exports.deleteReviewFromProduct = async review => {
     return await Product.deleteMany(review)

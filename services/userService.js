@@ -10,9 +10,17 @@ module.exports.removeUser = async _id => {
 	return await User.deleteOne({ _id });
 };
 module.exports.getUserById = async (userId) => {
-	const user = await User.findById(userId);
+	 const user = await User.findById(userId);
 	delete user.password;
 	return user;
+};
+module.exports.getSellers = async () => {
+  const seller = await User.findById(userId);
+};
+
+module.exports.getAllUsers = (query) => {
+	const users = User.find({ ...query, isSeller: true });
+	return users;
 };
 module.exports.login = async (email, password) => {
 	try {
@@ -41,10 +49,4 @@ module.exports.login = async (email, password) => {
 		};
 	}
 };
-module.exports.getAllUsers = () => {
-	const usersWithoutPassword = users.map(user => {
-		const { password, ...userWithoutPassword } = user.toObject();
-		return userWithoutPassword;
-	});
-	return usersWithoutPassword;
-};
+
