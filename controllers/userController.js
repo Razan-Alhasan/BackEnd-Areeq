@@ -96,7 +96,14 @@ module.exports.getAllUsers = async (
       query = { user: req.query.user };
     }
     const sellers = await userService.getAllUsers(query);
-    res.status(200).json(sellers);
+
+    const formattedSellers = sellers.map((seller) => ({
+      id: seller._id, 
+      name: `${seller.firstName} ${seller.lastName}`,
+      image: seller.photo,
+    }));
+
+    res.status(200).json(formattedSellers);
   } catch (err) {
     const error = `Failed to get seller users, error: ${err}`;
     res.status(400).json({ error });
