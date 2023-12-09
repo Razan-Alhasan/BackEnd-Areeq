@@ -2,7 +2,7 @@
 ---
 # AREEQ
 ## This is the server side of our graduation project.
-### AREEQ is a Palestinian platform to show sellers of Palestine and their products, that contain different features.
+### AREEQ is a Palestinian platform to show sellers and their products, that contain different features.
 ---
 ## Team Members:
 * Razan Alhasan.
